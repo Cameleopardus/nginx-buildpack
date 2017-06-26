@@ -41,7 +41,7 @@ http {
 		client_max_body_size <%= ENV['NGINX_CLIENT_MAX_BODY_SIZE'] || 1 %>M;
 
 
-
+        rewrite ^/blog$ /blog/ permanent;
         location /assets/ {
 			proxy_pass http://blog_server;
 			proxy_set_header X-Real-IP $remote_addr;
@@ -57,9 +57,7 @@ http {
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		}
 
-		location /blog{
-			rewrite /blog /blog/ permanent;
-		}
+
         location /blog/ {
 			proxy_pass http://blog_server/;
 			proxy_set_header X-Real-IP $remote_addr;
