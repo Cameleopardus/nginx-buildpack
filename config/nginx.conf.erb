@@ -40,6 +40,7 @@ http {
 		server_name _;
 		keepalive_timeout 5;
 		client_max_body_size <%= ENV['NGINX_CLIENT_MAX_BODY_SIZE'] || 1 %>M;
+		rewrite ^(.*[^/])$ $1/ permanent;
 
         # rewrite ^/blog$ /blog/ permanent;
         location /assets/ {
@@ -58,17 +59,17 @@ http {
 		}
 
 
-        location = /blog {
-			rewrite ^/blog$ /blog/ permanent;
-			port_in_redirect off;
-		}
+        #location = /blog {
+		#	rewrite ^/blog$ /blog/ permanent;
+		#	port_in_redirect off;
+		#}
 
         location /blog/ {
 			port_in_redirect off;
 
 			proxy_pass http://blog_server/;
 			proxy_set_header X-Real-IP $remote_addr;
-			proxy_set_header Host $http_host;
+			proxy_set_header Host $host;
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		}
 
