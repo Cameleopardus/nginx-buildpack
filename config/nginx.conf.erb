@@ -40,7 +40,7 @@ http {
 		keepalive_timeout 5;
 		client_max_body_size <%= ENV['NGINX_CLIENT_MAX_BODY_SIZE'] || 1 %>M;
 
-        location /blog/{
+        location /blog {
 			proxy_pass http://blog_server/;
 			proxy_set_header X-Real-IP $remote_addr;
 			proxy_set_header Host $host;
