@@ -57,7 +57,11 @@ http {
 		}
 
 
-        location ~ /blog/?$ {
+        location = /blog {
+			rewrite ^/blog$ /blog/ permanent;
+		}
+
+        location /blog/ {
 
 			proxy_pass http://blog_server/;
 			proxy_set_header X-Real-IP $remote_addr;
