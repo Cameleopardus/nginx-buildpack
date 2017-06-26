@@ -30,6 +30,10 @@ http {
 		server unix:/tmp/nginx.socket fail_timeout=0;
  	}
 
+	upstream blog_server {
+		server 107.170.196.187:80;
+	}
+
 	server {
 		listen <%= ENV["PORT"] %>;
 		server_name _;
@@ -37,14 +41,14 @@ http {
 		client_max_body_size <%= ENV['NGINX_CLIENT_MAX_BODY_SIZE'] || 1 %>M;
 
         location /blog/{
-			proxy_pass http://107.170.196.187:80;
+			proxy_pass http://blog_server
 			proxy_set_header X-Real-IP $remote_addr;
-			proxy_set_header Host $host;
+			# proxy_set_header Host $host;
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 		}
 
 
-		location /app {
+		location / {
 			proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 			proxy_set_header Host $http_host;
 			proxy_redirect off;
